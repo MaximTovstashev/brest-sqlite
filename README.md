@@ -35,28 +35,26 @@ table objects and controllers for each table in the database.
 When you will require additional functionality, you can extend basic _Table_ and _Controller_ classes.
 
 ### 1.4 Default methods
-#### 1.4.1 Table.row(filters, callback)
+#### 1.4.1 Table.row(filters)
 
 Request a single row from the database. If a single value is passed as _filters_ parameter, it is treated as
 filter by first primary field, so if the primary key covers more than one column you might want to pass them as an object.
 
 Request is automatically limited to one row, which is passed to callback as an object. If no records in the table match the
-filtering, the callback is called with an error. Please, note that same behaviour will occur on empty tables.
+filtering, the method returns a reject. Please, note that same behaviour will occur on empty tables.
 
 If you suppose that having none, or more than one result is a normal situation for the request, you should use _list_ method.
 
 You can also use **$allowEmpty:true** filter directive to suppress error on empty result.
 
-#### 1.4.2 Table.list(filters, callback)
+#### 1.4.2 Table.list(filters)
 
 Same as Table.row, but the array of records is returned. If no records match the filtering,
-an empty array is passed to callback.
-
-As a custom filter, you can use **$recursive** to ensure that default query will be built with recursion in mind.
+the promise resolves to an empty array.
 
 Use **$distinct** filter directive to perform "SELECT DISTINCT" query.
 
-#### 1.4.3 Table.insert(data, filters, callback)
+#### 1.4.3 Table.insert(data, filters)
 
 Insert new record into the table. Here, filtering is pretty much limited and used mostly to pass options.
 
@@ -79,7 +77,7 @@ Insert new record into the table. Here, filtering is pretty much limited and use
 
 Callback returns the the newly inserted row, unless **returning** is overridden in class definition.
 
-#### 1.4.4 Table.update(data, filters, callback)
+#### 1.4.4 Table.update(data, filters)
 
 Update table with **data**.
 
@@ -98,7 +96,7 @@ Any other appliable filter from which "WHERE" query can be built, can be used to
 _preprocessed_ and then passed to **$update_by**, which means, that under certain conditions, the fields you use to
 define updated records may also be preprocessed.
 
-#### 1.4.5 Table.del(filters, callback)
+#### 1.4.5 Table.del(filters)
 
 Delete table records.
 
@@ -107,13 +105,11 @@ is forbidden by default (as it will delete all table records in one go).
 
 Use **$forceEmptyDelete** filter directive or custom query, if it is what you really want.
 
-Callback returns primary keys of deleted entries, unless **returning** is overridden in class definition.
-
-#### 1.4.6 Table.count(filters, callback)
+#### 1.4.6 Table.count(filters)
 
 Return the number of filtered records. Any filters apply except for **limit**
 
-#### 1.4.7 Table.exists(filters, callback)
+#### 1.4.7 Table.exists(filters)
 
 Returns **true** if at least one filtered record exists. It is a shortcut for Table.count, cast to boolean.
 
@@ -217,13 +213,13 @@ Please, note that comparison filters are generated only for numeric fields
 ```javascript
 	class User extends Table {
 		constructor(db) {
-			super(db, 'user', 'u');
+			super(db, 'user');
 			//...
 			this.filters = {
 				organisation_id: {
 					description: `Select users from specific organisation`,
-					join: ` LEFT JOIN user_organisation AS ut ON ut.user_id = u.id`,
-					where: ` AND ut.organisation_id = %L`
+					join: ` LEFT JOIN user_organisation ON user_organisation.user_id = user.id`,
+					where: ` AND user_organisation.organisation_id = %L`
 				}
 			};
     	}

@@ -20,19 +20,19 @@ class Controller {
     /**
      * Default row request
      * @param {Number|String|Object} [filters] Filters object
-     * @param {Function} callback callback function
+     * @return {Promise}
      */
-    row(filters, callback) {
-        this.table.row(filters, callback);
+    row(filters) {
+        return this.table.row(filters);
     }
 
     /**
      * Default list request
      * @param filters
-     * @param callback
+     * @return {Promise}
      */
-    list(filters, callback) {
-        this.table.list(filters, callback);
+    list(filters) {
+        return this.table.list(filters);
     }
 
     /**
@@ -42,50 +42,48 @@ class Controller {
      * @param {Function} callback
      */
     insert(data, filters, callback) {
-        this.table.insert(data, filters, callback);
+        return this.table.insert(data, filters);
     }
 
     /**
      * Default update request
      * @param {Object} data
      * @param {Object} [filters]
-     * @param {Function} callback
+     * @return {Promise}
      */
-    update(data, filters, callback) {
-        this.table.update(data, filters, callback);
+    update(data, filters) {
+        return this.table.update(data, filters);
     }
 
     /**
      * Default delete request
      * @param {Number|Object} filters
-     * @param callback
+     * @return {Promise}
      */
-    del(filters, callback) {
-        this.table.del(filters, callback);
+    del(filters) {
+        return this.table.del(filters);
     }
 
 
     /**
      * Return the number of records matching the request. Count all records by default
      * @param filters
-     * @param callback
+     * @return {Promise}
      */
-    count(filters, callback) {
-        this.table.count(filters, callback);
+    count(filters) {
+        return this.table.count(filters);
     };
 
     /**
      * Returns true if query
      *
      * @param filters
-     * @param callback
+     * @return {Promise}
      */
-    exists(filters, callback) {
-        if (_.isEmpty(filters)) return callback({error: `Empty request for ${this.name} entry existance check`, code: httpStatus.UNPROCESSABLE_ENTITY});
-        this.table.exists(filters, function(err, exists){
-            if (err) return callback(err);
-            callback(null, _.defaults(filters, {exists: exists}));
-        });
+    exists(filters) {
+        if (_.isEmpty(filters)) return Promise.reject({error: `Empty request for ${this.name} entry existance check`, code: httpStatus.UNPROCESSABLE_ENTITY});
+        return this.table.exists(filters)
+          .then(exists => _.defaults(filters, {exists}));
     };
 
     /**

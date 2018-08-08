@@ -24,16 +24,12 @@ describe('Brest-SQLite', function(){
                 (next) => {
                     const sql = fs.readFileSync('./test/data/test-person.sql', 'utf8');
                     db.exec(sql, next);
-                    console.log('init db');
                 },
                 (next) => {
                     db.close(next);
-                    console.log('close db');
                 },
                 (next) => {
-                    console.log('before init');
                     _db.before_static_init(brest, next);
-                  console.log('after init');
                 }
             ],(err)=>{
                 if (err) {
@@ -55,5 +51,7 @@ describe('Brest-SQLite', function(){
 
     load('Model', './tests/model-generic.js');
     load('Model:Row', './tests/model-row.js');
+    load('Model:List', './tests/model-list.js');
+    load('Model:Insert', './tests/model-insert.js');
 
 });

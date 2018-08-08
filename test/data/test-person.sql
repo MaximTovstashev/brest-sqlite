@@ -1,12 +1,13 @@
 DROP TABLE IF EXISTS test_person;
 
 CREATE TABLE test_person (
-	id INTEGER PRIMARY KEY,
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
 	attitude TEXT,
 	height INTEGER NOT NULL,
 	iq INTEGER
 );
+CREATE UNIQUE INDEX test_person_id_IDX ON test_person (id);
 
 INSERT INTO test_person (name, attitude, height, iq)
 VALUES
