@@ -1,6 +1,8 @@
 # brest-pg
 SQLite library for Brest.
 
+[![CircleCI](https://circleci.com/gh/MaximTovstashev/brest-sqlite.svg?style=svg)](https://circleci.com/gh/MaximTovstashev/brest-sqlite)
+
 ## 1. Usage
 
 ### 1.1 Setup
