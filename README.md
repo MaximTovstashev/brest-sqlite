@@ -339,5 +339,10 @@ Char case is arbitrary
 
 ## Changelist
 
+### 0.0.2
+- Fixed issue with customControllers not being picked up
+- circleCI support
+- circleCI badge
+
 ### 0.0.1
 - First working version
