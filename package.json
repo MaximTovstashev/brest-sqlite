@@ -1,6 +1,6 @@
 {
   "name": "brest-sqlite",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "async": "^2.6.1",
     "lodash": "^4.17.10",
